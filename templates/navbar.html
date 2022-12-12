@@ -16,6 +16,9 @@
                 <input name="q" placeholder="Search for tickets" />
             </label>
         </form>
+        {% if request.user.is_authenticated %}
+        <a href="{% url 'notifications' %}">Notifications ({{ notifications.count }})</a>
+        {% endif %}
         <nav class="header__menu">
 
 

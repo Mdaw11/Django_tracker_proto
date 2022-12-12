@@ -37,6 +37,7 @@ INSTALLED_APPS = [
 
     'base.apps.BaseConfig',
     'users.apps.UsersConfig',
+    'notification.apps.NotificationConfig',
 
     'rest_framework',
     "corsheaders",
@@ -73,6 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notification.context_processors.notifications',
             ],
         },
     },

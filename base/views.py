@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from .models import Room, Topic, Message
 from .forms import RoomForm
+from notification.utilities import create_notification
+
 
 # Create your views here.
 
@@ -60,14 +62,16 @@ def createRoom(request):
             host=request.user,
             topic=topic,
             name=request.POST.get('name'),
-            assigned=request.user,
+            assigned=request.POST.get('assigned'),
             status=request.POST.get('status'),
             priority=request.POST.get('priority'),
             type=request.POST.get('type'),
             description=request.POST.get('description'),
         )
+        
+            
         return redirect('room', pk=room.id)
-
+    
     context = {'form': form, 'topics': topics}
     return render(request, 'room/room_form.html', context)
 
@@ -91,6 +95,9 @@ def updateRoom(request, pk):
         room.type = request.POST.get('type')
         room.description = request.POST.get('description')
         room.save()
+        
+        create_notification(request, room.assigned, 'application', extra_id=room.id)
+        
         return redirect('room', pk=room.id)
 
     context = {'form': form, 'topics': topics, 'room': room}
